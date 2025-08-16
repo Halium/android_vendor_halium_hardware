@@ -191,8 +191,10 @@ static int out_get_render_position(const struct audio_stream_out *stream,
 {
     struct wrapper_stream_out *out = (struct wrapper_stream_out *)stream;
     *dsp_frames = 0;
+    uint64_t dsp_frames_val = 0;
 
-    status_t ret = out->streamIface->getRenderPosition(dsp_frames);
+    status_t ret = out->streamIface->getRenderPosition(&dsp_frames_val);
+    *dsp_frames = dsp_frames_val;
     ALOGV("out_get_render_position: dsp_frames: %d", *dsp_frames);
     return ret;
 }
@@ -224,12 +226,8 @@ static int out_remove_audio_effect(const struct audio_stream *stream, effect_han
 static int out_get_next_write_timestamp(const struct audio_stream_out *stream,
         int64_t *timestamp)
 {
-    struct wrapper_stream_out *out = (struct wrapper_stream_out *)stream;
-    *timestamp = 0;
-
-    status_t ret = out->streamIface->getNextWriteTimestamp(timestamp);
-    ALOGV("out_get_next_write_timestamp: %ld", (long int)(*timestamp));
-    return ret;
+    ALOGV("out_get_next_write_timestamp not supported");
+    return INVALID_OPERATION;
 }
 
 /** audio_stream_in implementation **/
